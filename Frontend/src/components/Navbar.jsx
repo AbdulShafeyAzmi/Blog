@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 
 const Navbar = () => {
-  const user = true;
+  const user = false;
   return (
     <div className="flex items-centre justify-between px-6 md:px-[200px] py-4">
       <h1 className="text-lg qmd:text-xl font-extrabold ">
@@ -25,14 +25,14 @@ const Navbar = () => {
           </h3>
         ) : (
           <h3>
-            <Link to="/login"></Link>Login
+            <Link to="/login">Login</Link>
           </h3>
         )}
         {user ? (
           <h3>Profile</h3>
         ) : (
           <h3>
-            <Link to="/register"></Link>Register
+            <Link to="/register">Register</Link>
           </h3>
         )}
       </div>
