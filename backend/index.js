@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRouter = require("./routes/auth");
-
+const userRoute = require("./routes/users");
 const app = express();
 //database connection
 const connectToDb = async () => {
@@ -17,6 +17,7 @@ const connectToDb = async () => {
 dotenv.config();
 app.use(express.json());
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRoute);
 app.listen(process.env.PORT, () => {
   connectToDb();
   console.log("server is running on " + process.env.PORT);
