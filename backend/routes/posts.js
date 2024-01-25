@@ -5,52 +5,68 @@ const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const bcrypt = require("bcrypt");
 
-//CREATE
+//CREATE POST
+router.post("/create", async (req, res) => {
+  try {
+    const newPost = new Post(req.body);
+    const savedPost = await newPost.save();
+    res.status(200).json(savedPost);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // UPDATE
 router.put("/:id", async (req, res) => {
   try {
-    const existingUser = await User.findById(req.params.id);
-    if (!existingUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    if (req.body.password) {
-      const salt = await bcrypt.genSalt(10);
-      req.body.password = await bcrypt.hashSync(req.body.password, salt);
-    }
-    const updatedUser = await User.findByIdAndUpdate(
+    const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true }
     );
-    res.status(200).json(updatedUser);
+    res.status(200).json(updatedPost);
   } catch (err) {
     res.status(500).json(err);
   }
 });
-// DELETE
 
+// DELETE
 router.delete("/:id", async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    await Post.deleteMany({ userId: req.params.id });
-    await Comment.deleteMany({ userId: req.params.body });
-    res.status(200).json("User has been deleted");
+    await Post.findByIdAndDelete(req.params.id);
+    res.status(200).json("Post has been deleted");
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-//GET USER
+//GET POST DETAILS
 router.get("/:id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    const { password, ...info } = user._doc;
-    res.status(200).json(info);
+    const post = await Post.findById(req.params.id);
+    res.status(200).json(post);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+//GET POSTS
+router.get("/", async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET USER POST
+router.get("/user/:userId", async (req, res) => {
+  try {
+    const posts = await Post.find({ userId: req.params.userId });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;
