@@ -4,9 +4,10 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../verifyToken");
 
 //CREATE POST
-router.post("/create", async (req, res) => {
+router.post("/create", verifyToken, async (req, res) => {
   try {
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
@@ -17,7 +18,7 @@ router.post("/create", async (req, res) => {
 });
 
 // UPDATE
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
@@ -31,7 +32,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
     res.status(200).json("Post has been deleted");
@@ -52,8 +53,12 @@ router.get("/:id", async (req, res) => {
 
 //GET POSTS
 router.get("/", async (req, res) => {
+  const query = req.query;
   try {
-    const posts = await Post.find();
+    const searchFilter = {
+      title: { $regex: query.search, $options: "i" },
+    };
+    const posts = await Post.find(query.search ? searchFilter : null);
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -69,4 +74,5 @@ router.get("/user/:userId", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 module.exports = router;
