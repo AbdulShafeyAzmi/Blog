@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/auth");
 const userRoute = require("./routes/users");
@@ -21,6 +22,7 @@ const connectToDb = async () => {
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRouter);
