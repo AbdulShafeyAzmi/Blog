@@ -1,39 +1,30 @@
-const HomePost = () => {
+/* eslint-disable react/prop-types */
+const HomePost = ({ post }) => {
   return (
-    <>
-      <div className="w-full flex mt-8 space-x-4">
-        {/* left    */}
-        <div className="w-[35%] h-[200px] flex justify-center items-center">
-          <img
-            src="https://media.istockphoto.com/id/1452604857/photo/businessman-touching-the-brain-working-of-artificial-intelligence-automation-predictive.jpg?s=612x612&w=0&k=20&c=GkAOxzduJbUKpS2-LX_l6jSKtyhdKlnPMo2ito4xpR4="
-            alt="Phito"
-            className="h-full w-full object-cover"
-          />
-        </div>
-        {/* right */}
-        <div className="flex flex-col w-[65%]">
-          <h1 className="text-xl md:text-2xl font-bold md:mb-2 mb-1 ">
-            10 uses of Artificial Intelligence in Day to Day Life
-          </h1>
-          <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
-            <p>Abdul Shafey</p>
-            <div className="flex space-x-2 text-sm">
-              <p>18/01/2024</p>
-              <p>02:05</p>
-            </div>
-          </div>
-          <p className="text-sm md:text-lg">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-            voluptatum fugit modi corrupti eveniet aspernatur distinctio
-            eligendi et commodi non ipsam enim ducimus vel accusantium omnis
-            mollitia, quis est temporibus, explicabo iusto reprehenderit?
-            Necessitatibus, quam praesentium enim assumenda, nobis officia, esse
-            laborum repudiandae minima eius sint consectetur soluta ducimus
-            deserunt?
-          </p>
-        </div>
+    <div className="flex w-full mt-8 space-x-4 ">
+      <div className="w-[35%] md:w-[30%] md:h-[200px] h-[200px] flex justify-center items-center">
+        <img
+          src={post.photo}
+          alt="img"
+          className="object-cover w-full h-full"
+        />
       </div>
-    </>
+      <div className="flex flex-col w-[65%]">
+        <h1 className="mb-1 text-xl font-bold md:mb-2 md:text-2xl">
+          {post.title}
+        </h1>
+        <div className="flex mb-2 text-sm font-semibold text-gray-500  items-center justify-between sp:ace-x-4 md:mb-4">
+          <p className="mr-4">@{post.username}</p>
+          <div className="flex space-x-2 ">
+            <p>{post.updatedAt.slice(0, 10)}</p>
+            <p>{post.updatedAt.slice(11, 16)}</p>
+          </div>
+        </div>
+        <p className="text-left md:text-lg">
+          {post.desc.slice(0, 200) + " .... Read more"}
+        </p>
+      </div>
+    </div>
   );
 };
 
