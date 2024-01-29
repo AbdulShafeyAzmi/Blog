@@ -3,18 +3,17 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { URL } from "../url";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
+import { UserContext } from "../context/UserContext";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [noResult, setNoResult] = useState(false);
   const [loader, setLoader] = useState(false);
-
+  const { user } = useContext(UserContext);
   const { search } = useLocation();
-
-  // console.log(search);
 
   async function fetchPost() {
     try {
@@ -45,7 +44,13 @@ const Home = () => {
           <Loader />
         </div>
       ) : !noResult ? (
-        posts.map((post) => <HomePost key={post._id} post={post} />)
+        posts.map((post) => (
+          <>
+            <Link to={user ? `/posts/post/${post._id}` : "/login"}>
+              <HomePost key={posts._id} post={post} />
+            </Link>
+          </>
+        ))
       ) : (
         <h3 className="text-center font-bold mt-16 min-h-[80vh]">
           No posts is available
