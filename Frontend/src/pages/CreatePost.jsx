@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { URL } from "../url";
-// import verifyToken from "../../../backend/verifyToken";
 
 export default function CreatePost() {
   const navigate = useNavigate();
@@ -52,15 +51,12 @@ export default function CreatePost() {
       // console.log(newPost)
       try {
         //Image upload
-        const imgUpload = await axios.post(URL + "/api/upload", data);
+        await axios.post(URL + "/api/upload", data);
         //console.log(imgUpload.data);
       } catch (err) {
         console.log(err);
       }
     }
-    // const headers = {
-    //   Authorization: `Bearer ${verifyToken}`,
-    // };
     try {
       const res = await axios.post(URL + "/api/posts/create", newPost, {
         withCredentials: true,

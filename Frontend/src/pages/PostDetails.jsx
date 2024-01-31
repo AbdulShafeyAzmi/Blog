@@ -4,7 +4,7 @@ import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import Comment from "../components/Comment";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { URL, IF } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
@@ -14,6 +14,7 @@ const PostDetails = () => {
   const [post, setPost] = useState({});
   const [loader, setLoader] = useState(false);
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const postId = useParams().id;
   async function fetchPost() {
     setLoader(true);
@@ -26,6 +27,28 @@ const PostDetails = () => {
       setLoader(true);
     }
   }
+  async function handleDeletePost() {
+    try {
+      await axios.put(`${URL}/api/posts/${postId}`, {
+        withCredentials: true,
+      });
+      navigate("/");
+    } catch (err) {
+      console.log("Error in Deleting Post", err);
+    }
+  }
+
+  // async function handleEditPost() {
+  //   try {
+  //     await axios.delete(`${URL}/api/posts/${postId}`, {
+  //       withCredentials: true,
+  //     });
+
+  //     navigate("/");
+  //   } catch (err) {
+  //     console.log("Error in Deleting Post", err);
+  //   }
+  // }
 
   useEffect(
     function () {
@@ -33,7 +56,6 @@ const PostDetails = () => {
     },
     [postId]
   );
-
   return (
     <div>
       <Navbar />
@@ -49,10 +71,13 @@ const PostDetails = () => {
             </h1>
             {user?._id === post?.userId && (
               <div className="flex items-center justify-center space-x-2">
-                <p className="cursor-pointer">
+                <p
+                  className="cursor-pointer"
+                  onClick={() => navigate("/edit/" + postId)}
+                >
                   <BiEdit />
                 </p>
-                <p className="cursor-pointer">
+                <p className="cursor-pointer" onClick={handleDeletePost}>
                   <MdDelete />
                 </p>
               </div>
