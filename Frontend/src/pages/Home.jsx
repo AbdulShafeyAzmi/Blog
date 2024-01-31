@@ -19,7 +19,10 @@ const Home = () => {
     try {
       setLoader(true);
       const res = await axios.get(`${URL}/api/posts/${search}`);
-      setPosts(res.data);
+      const sortedPosts = res.data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setPosts(sortedPosts);
       if (res.data.length === 0) {
         setNoResult(true);
       } else {
@@ -46,8 +49,11 @@ const Home = () => {
       ) : !noResult ? (
         posts.map((post) => (
           <>
-            <Link to={user ? `/posts/post/${post._id}` : "/login"}>
-              <HomePost key={posts._id} post={post} />
+            <Link
+              key={posts._id}
+              to={user ? `/posts/post/${post._id}` : "/login"}
+            >
+              <HomePost post={post} />
             </Link>
           </>
         ))
