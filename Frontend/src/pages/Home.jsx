@@ -41,27 +41,28 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="px-8 md:px-[200px] "></div>
-      {loader ? (
-        <div className="h-[40vh] flex justify-center items-centre ">
-          <Loader />
-        </div>
-      ) : !noResult ? (
-        posts.map((post) => (
-          <>
-            <Link
-              key={posts._id}
-              to={user ? `/posts/post/${post._id}` : "/login"}
-            >
-              <HomePost post={post} />
-            </Link>
-          </>
-        ))
-      ) : (
-        <h3 className="text-center font-bold mt-16 min-h-[80vh]">
-          No posts is available
-        </h3>
-      )}
+      <div className="px-8 md:px-[200px] ">
+        {loader ? (
+          <div className="h-[40vh] flex justify-center items-centre ">
+            <Loader />
+          </div>
+        ) : !noResult ? (
+          posts.map((post) => (
+            <>
+              <Link
+                key={posts._id}
+                to={user ? `/posts/post/${post._id}` : "/login"}
+              >
+                <HomePost post={post} />
+              </Link>
+            </>
+          ))
+        ) : (
+          <h3 className="text-center font-bold mt-16 min-h-[80vh]">
+            No posts is available
+          </h3>
+        )}
+      </div>
       <Footer />
     </>
   );
