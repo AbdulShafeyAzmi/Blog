@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { URL } from "../url";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Menu = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   async function handleLogout() {
     try {
-      const res = await axios.get(`${URL}/api/auth/logout`, {
+      await axios.get(`${URL}/api/auth/logout`, {
         withCredentials: true,
       });
       navigate("/login");
@@ -19,30 +19,30 @@ const Menu = () => {
     }
   }
   return (
-    <div className="bg-black w-[200px] flex flex-col items-start absolute top-12 right-6 md:right-32 rounded-md p-4 space-y-4">
+    <div className="bg-black w-[200px] z-10 flex flex-col items-start absolute top-12 right-6 md:right-32 rounded-md p-4 space-y-4">
       {!user && (
         <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          Login
+          <Link to="/login">Login</Link>
         </h3>
       )}
       {!user && (
         <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          Register
+          <Link to={`/profile/${user._id}`}>Register</Link>
         </h3>
       )}
       {user && (
         <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          Profile
+          <Link to={`/profile/${user._id}`}>Profile</Link>
         </h3>
       )}
       {user && (
         <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          Write
+          <Link to="/write">Write</Link>
         </h3>
       )}
       {user && (
         <h3 className="text-white text-sm hover:text-gray-500 cursor-pointer">
-          My Blogs
+          <Link to={`/myblogs/${user._id}`}>My blogs</Link>
         </h3>
       )}
       {user && (

@@ -23,7 +23,7 @@ const HomePost = ({ post }) => {
           </div>
         </div>
         <p className="text-left md:text-lg">
-          {post.desc.slice(0, 200) + " .... Read more"}
+          {post.desc.slice(0, 500) + " .... Read more"}
         </p>
       </div>
     </div>
